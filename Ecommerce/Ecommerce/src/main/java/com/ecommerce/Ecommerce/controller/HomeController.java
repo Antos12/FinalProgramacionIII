@@ -4,6 +4,7 @@ package com.ecommerce.Ecommerce.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,9 +74,14 @@ public class HomeController {
 		detalleOrden.setNombre(producto.getNombre());
 		detalleOrden.setTotal(producto.getPrecio() * cantidad);
 		detalleOrden.setProducto(producto);
+
+        //validar que el producto no se agrege dos veces
+        Integer idProcuto = producto.getId();
+        boolean ingresado =  detalles.stream().anyMatch(p ->p.getProducto().getId() == idProcuto);
 		
-        detalles.add(detalleOrden);
-		
+        if(!ingresado){
+            detalles.add(detalleOrden);
+        }
 		
 		sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
@@ -107,8 +113,15 @@ public class HomeController {
 		model.addAttribute("cart", detalles);
 		model.addAttribute("orden", orden);
 
-
-
         return "usuario/carrito";
+    }
+
+    @GetMapping("/getCart")
+    public String getCart(Model model){
+
+        model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+
+        return "/usuario/carrito";
     }
 }
