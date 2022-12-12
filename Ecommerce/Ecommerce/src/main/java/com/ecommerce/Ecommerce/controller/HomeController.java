@@ -2,10 +2,14 @@ package com.ecommerce.Ecommerce.controller;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import javax.persistence.Id;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ecommerce.Ecommerce.model.DetalleOrden;
 import com.ecommerce.Ecommerce.model.Orden;
 import com.ecommerce.Ecommerce.model.Producto;
+import com.ecommerce.Ecommerce.model.Usuario;
+import com.ecommerce.Ecommerce.service.IDetalleOrdenService;
+import com.ecommerce.Ecommerce.service.IOrdenService;
+import com.ecommerce.Ecommerce.service.IUsuarioService;
 import com.ecommerce.Ecommerce.service.ProductoService;
 
 
@@ -34,15 +42,31 @@ public class HomeController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private IUsuarioService usuarioService;
+
+    @Autowired
+    private IOrdenService ordenService;
+
+    @Autowired
+    private IDetalleOrdenService detalleOrdenService;
+
     //para almacenar los datos de la orden
     List<DetalleOrden> detalles =  new ArrayList<DetalleOrden>();
 
     Orden orden = new Orden();
 
     @GetMapping("")
-    public String home(Model model){
-        
-        model.addAttribute("productos", productoService.findAll());
+    public String home(Model model, HttpSession session){
+        log.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
+                
+        //session
+        model.addAttribute("sesion", session.getAttribute("idusuario"));
+
+		model.addAttribute("productos", productoService.findAll());
+		
+		
+
 
         return "usuario/home";
     }
@@ -126,21 +150,59 @@ public class HomeController {
         return "/usuario/carrito";
     }
 
+    // @GetMapping("/order")
+    // public String order(){
+    //     return "usuario/error";
+    // }
+
     @GetMapping("/order")
-    public String order(){
-        return "usuario/error";
+    public String order(Model model, HttpSession session){
+        Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+
+        model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+        model.addAttribute("usuario", usuario);
+        
+        return "usuario/resumenorden";
     }
 
-    @GetMapping("/registro")
-	public String create() {
-		return "usuario/errorLogin";
+    // guardar la orden
+	@GetMapping("/saveOrder")
+	public String saveOrder(HttpSession session ) {
+        Date fechaCreacion = new Date();
+		orden.setFechaCreacion(fechaCreacion);
+		orden.setNumero(ordenService.generarNumeroOrden());
+		
+		//usuario
+        Usuario usuario=(Usuario) usuarioService.findbyId(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+
+		orden.setUsuario(usuario);
+		ordenService.save(orden);
+		
+		//guardar detalles
+		for (DetalleOrden dt:detalles) {
+			dt.setOrden(orden);
+			detalleOrdenService.save(dt);
+		}
+		
+		///limpiar lista y orden
+		orden = new Orden();
+		detalles.clear();
+        return "redirect:/";
+    }
+
+    @PostMapping("/search")
+	public String searchProduct(@RequestParam String nombre, Model model) {
+		log.info("Nombre del producto: {}", nombre);
+		List<Producto> productos= productoService.findAll().stream().filter( p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
+		model.addAttribute("productos", productos);		
+		return "usuario/home";
 	}
 
-    // @PostMapping("/search")
-	// public String searchProduct(@RequestParam String nombre, Model model) {
-	// 	log.info("Nombre del producto: {}", nombre);
-	// 	List<Producto> productos= productoService.findAll().stream().filter( p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
-	// 	model.addAttribute("productos", productos);		
-	// 	return "usuario/home";
+    // @GetMapping("/registro")
+	// public String create() {
+	// 	return "usuario/errorLogin";
 	// }
+
+   
 }
