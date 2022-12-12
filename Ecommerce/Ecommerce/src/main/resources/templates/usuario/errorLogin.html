@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Restaurante</title>
+
+
+  
+	<!-- Bootstrap core CSS -->
+	<link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link th:href="@{css/heroic-features.css}" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+ <div th:include="usuario/template_usuario.html::header">
+ </div>
+<!-- Jumbotron Header -->
+
+<div align="center">
+    <img  style="width: 60%; height: 60%; padding: 30px;" src="https://us.123rf.com/450wm/lineartist/lineartist1708/lineartist170801509/83834098-electricista-de-dibujos-animados-pensando-en-vector-de-reparaci%C3%B3n-de-computadoras.jpg?ver=6">
+    <h1 style="text-align:center;">LO SIENTO HUBO UN ERROR</h1>
+    <h2>No puede iniciar sesion, contactese con nostros</h2>
+    <p style="font-size: 150%;"> +261-306-5670</p>
+    <p style="font-size: 150%;">+261-306-4390</p>
+    <a  th:href="@{/}" style="font-size: 150%;">REGRESE AL INICIO</a>
+</div>
+
+
+
+    <!-- Footer -->
+    <div th:include="usuario/template_usuario.html::footer">
+
+    </div>
+ 
+    
+ <!-- Bootstrap core JavaScript -->
+ <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+ <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+</html>
