@@ -35,7 +35,7 @@ public class UsuarioController {
     public String save(Usuario usuario){
         log.info("Usuario registro: {}",usuario);
         usuario.setTipo("USER");
-		// usuarioService.save(usuario);
+		usuarioService.save(usuario);
         return "redirect:/";
     }
 
@@ -44,25 +44,25 @@ public class UsuarioController {
 		return "usuario/login";
 	}
 
-    // @PostMapping("/acceder")
-	// public String acceder(Usuario usuario, HttpSession session) {
-	// 	log.info("Accesos : {}", usuario);
+    @PostMapping("/acceder")
+	public String acceder(Usuario usuario, HttpSession session) {
+		log.info("Accesos : {}", usuario);
 		
-	// 	// Optional<Usuario> user=usuarioService.findByEmail(usuario.getEmail());
-	// 	// log.info("Usuario de db: {}", user.get());
+		Optional<Usuario> user=usuarioService.findByEmail(usuario.getEmail());
+		//log.info("Usuario de db: {}", user.get());
 		
-	// 	if (user.isPresent()) {
-	// 		session.setAttribute("idusuario", user.get().getId());
+		if (user.isPresent()) {
+			session.setAttribute("idusuario", user.get().getId());
 			
-	// 		if (user.get().getTipo().equals("ADMIN")) {
-	// 			return "redirect:/administrador";
-	// 		}else {
-	// 			return "redirect:/";
-	// 		}
-	// 	}else {
-	// 		log.info("Usuario no existe");
-	// 	}
+			if (user.get().getTipo().equals("ADMIN")) {
+				return "redirect:/administrador";
+			}else {
+				return "redirect:/";
+			}
+		}else {
+			log.info("Usuario no existe");
+		}
 		
-	// 	return "redirect:/";
-	// }
+		return "redirect:/";
+	}
 }
