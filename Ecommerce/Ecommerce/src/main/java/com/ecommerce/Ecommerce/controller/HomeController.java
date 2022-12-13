@@ -166,30 +166,36 @@ public class HomeController {
         return "usuario/resumenorden";
     }
 
-    // guardar la orden
-	@GetMapping("/saveOrder")
-	public String saveOrder(HttpSession session ) {
-        Date fechaCreacion = new Date();
-		orden.setFechaCreacion(fechaCreacion);
-		orden.setNumero(ordenService.generarNumeroOrden());
+    // // guardar la orden
+	// @GetMapping("/saveOrder")
+	// public String saveOrder(HttpSession session ) {
+    //     Date fechaCreacion = new Date();
+	// 	orden.setFechaCreacion(fechaCreacion);
+	// 	orden.setNumero(ordenService.generarNumeroOrden());
 		
-		//usuario
-        //Usuario usuario=(Usuario) usuarioService.findbyId(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+	// 	//usuario
+    //     //Usuario usuario=(Usuario) usuarioService.findbyId(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+    //     Usuario usuario =usuarioService.findById(1).get();
 
-	//	orden.setUsuario(usuario);
-		ordenService.save(orden);
+	//     orden.setUsuario(usuario);
+	// 	ordenService.save(orden);
 		
-		//guardar detalles
-		for (DetalleOrden dt:detalles) {
-			dt.setOrden(orden);
-			detalleOrdenService.save(dt);
-		}
+	// 	//guardar detalles
+	// 	for (DetalleOrden dt:detalles) {
+	// 		dt.setOrden(orden);
+	// 		detalleOrdenService.save(dt);
+	// 	}
 		
-		///limpiar lista y orden
-		orden = new Orden();
-		detalles.clear();
-        return "redirect:/";
-    }
+	// 	///limpiar lista y orden
+	// 	orden = new Orden();
+	// 	detalles.clear();
+    //     return "redirect:/";
+    // }
+
+     @GetMapping("/saveOrder")
+     public String saveOrder(){
+         return "usuario/error";
+     }
 
     @PostMapping("/search")
 	public String searchProduct(@RequestParam String nombre, Model model) {
