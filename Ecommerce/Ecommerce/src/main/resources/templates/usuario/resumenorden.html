@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 
 <head>
 
@@ -8,15 +8,14 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Spring eCommerce</title>
+  <title>Comicalla</title>
 
 
- <!-- Bootstrap core CSS -->
-<link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+	<link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
-<!-- Custom styles for this template -->
-<link th:href="@{/css/heroic-features.css}" rel="stylesheet">
-
+	<!-- Custom styles for this template -->
+	<link th:href="@{css/heroic-features.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -24,6 +23,7 @@
  <!-- Navigation -->
  <div th:include="usuario/template_usuario.html::header">
 </div>
+
     <!-- Page Content -->
     <div class="container">
 
@@ -47,9 +47,9 @@
               <h5 class="card-title">
                 DATOS ORDEN
               </h5>
-              <h6 th:text=" 'Nombre: ' +${usuario.nombre}">Nombre: </h6>
-              <h6 th:text="'Correo: ' +${usuario.email}">Correo: </h6>
-              <h6 th:text="'Direccion: ' +${usuario.direccion}">Dirección</h6>
+              <h6 th:text="'Nombre: '+${usuario.nombre}">Nombre: </h6>
+              <h6 th:text="'Correo: '+${usuario.email}">Correo: </h6>
+              <h6 th:text="'Dirección: '+${usuario.direccion}">Dirección</h6>
 
               <h5 class="card-title">
                 PRODUCTOS
@@ -66,10 +66,10 @@
                   </thead>
                   <tbody>
                     <tr th:each="dtorden:${cart}">
-                     <td th:text="${dtorden.nombre}" ></td>
+                     <td th:text="${dtorden.nombre}"></td>
                      <td th:text="${dtorden.precio}"></td>
                      <td th:text="${dtorden.cantidad}"></td>
-                     <td th:text="${dtorden.total}" ></td>
+                     <td th:text="${dtorden.total}"></td>
 
                    </tr>
                  </tbody>
@@ -84,7 +84,7 @@
           <h2 class="card-title">Resumen Orden</h2>
 
           <ul class="list-group">
-            <li class="list-group-item"><h5 th:text=" 'Total: $'+${orden.total} "> </h5></li>
+            <li class="list-group-item"><h5 th:text=" 'Total: '+ ${orden.total}"> </h5></li>
             <a th:href="@{saveOrder}" class="btn btn-dark">Generar</a>
           </ul>
         </div>
@@ -96,12 +96,10 @@
   <!-- Footer -->
   <div th:include="usuario/template_usuario.html::footer">
 
-  </div>
+ <!-- Bootstrap core JavaScript -->
+<script th:src="@{vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-  
-<!-- Bootstrap core JavaScript -->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
 
 </html>

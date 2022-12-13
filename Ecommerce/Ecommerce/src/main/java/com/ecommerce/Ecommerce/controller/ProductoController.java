@@ -48,8 +48,8 @@ public class ProductoController{
         Logger.info("Este es el objeto producto{}",producto);
        
 		
-		Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
-        producto.setUsuario(u);
+		// Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+        // producto.setUsuario(u);
 
         //imagenes
         if(producto.getId()==null){ //cuando se crea un producto

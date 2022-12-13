@@ -156,9 +156,9 @@ public class HomeController {
     // }
 
     @GetMapping("/order")
-    public String order(Model model, HttpSession session){
-        Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())).get();
-
+    public String order(Model model){
+        //Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+        Usuario usuario =usuarioService.findById(1).get();
         model.addAttribute("cart", detalles);
 		model.addAttribute("orden", orden);
         model.addAttribute("usuario", usuario);
@@ -174,9 +174,9 @@ public class HomeController {
 		orden.setNumero(ordenService.generarNumeroOrden());
 		
 		//usuario
-        Usuario usuario=(Usuario) usuarioService.findbyId(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+        //Usuario usuario=(Usuario) usuarioService.findbyId(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 
-		orden.setUsuario(usuario);
+	//	orden.setUsuario(usuario);
 		ordenService.save(orden);
 		
 		//guardar detalles
